@@ -8,7 +8,7 @@ DIR_PREFIX=${DIR_PREFIX:="${SCRIPT_DIR}/rm-snapshot-test"}
 MOUNT_DIR=${DIR_PREFIX}/rm-image-mount
 WWW_DIR=${DIR_PREFIX}/www
 RM_NIGHTLY_DIR=${DIR_PREFIX}/rm-snapshot
-RM_NIGHTLY_URL=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/jens-maus/RaspberryMatic/releases/22744592/assets | jq -r '.[] | select(.name | endswith("ccu3.tgz")) | .browser_download_url')
+RM_NIGHTLY_URL=$(curl -sSL -H "Accept: application/vnd.github.v3+json" https://api.github.com/repos/OpenCCU/OpenCCU/releases/22744592/assets | jq -r '.[] | select(.name | endswith("ccu3.tgz")) | .browser_download_url')
 IMAGEFILENAME=${DIR_PREFIX}/rm-snapshot/rootfs.ext4
 PATCH_DIR=${SCRIPT_DIR}/src/addon/patch
 PATCHSUBDIR_VERSION=le_363
