@@ -1,4 +1,4 @@
-name: Patch-Apply Test on RaspberryMatic Nightly
+name: Patch-Apply Test on OpenCCU Nightly
 
 on:
   push:
