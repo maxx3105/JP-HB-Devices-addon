@@ -1,6 +1,6 @@
-# JP-HB-Devices-addon [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/) <br/>[![Github All Releases](https://img.shields.io/github/downloads/jp112sdl/JP-HB-Devices-addon/total.svg)](https://github.com/jp112sdl/JP-HB-Devices-addon/releases) [![GitHub issues](https://img.shields.io/github/issues/jp112sdl/JP-HB-Devices-addon.svg)](https://github.com/jp112sdl/JP-HB-Devices-addon/issues) [![Patch-Apply RaspberryMatic Snapshot](https://github.com/jp112sdl/JP-HB-Devices-addon/actions/workflows/test-raspberrymatic-snapshot.yml/badge.svg?branch=master)](https://github.com/jp112sdl/JP-HB-Devices-addon/actions/workflows/test-raspberrymatic-snapshot.yml) <a href='https://ko-fi.com/N4N21R89O' target='_blank'><img height='20' style='border:0px;height:20px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+# JP-HB-Devices-addon [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/) <br/>[![Github All Releases](https://img.shields.io/github/downloads/jp112sdl/JP-HB-Devices-addon/total.svg)](https://github.com/jp112sdl/JP-HB-Devices-addon/releases) [![GitHub issues](https://img.shields.io/github/issues/jp112sdl/JP-HB-Devices-addon.svg)](https://github.com/jp112sdl/JP-HB-Devices-addon/issues) [![Patch-Apply OpenCCU Snapshot](https://github.com/jp112sdl/JP-HB-Devices-addon/actions/workflows/test-openccu-snapshot.yml/badge.svg?branch=master)](https://github.com/jp112sdl/JP-HB-Devices-addon/actions/workflows/test-openccu-snapshot.yml) <a href='https://ko-fi.com/N4N21R89O' target='_blank'><img height='20' style='border:0px;height:20px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
-**✅ lauffähig unter CCU / RaspberryMatic Firmware 3.47.10 - 3.79.6 [inkl. x86]**<br/>
+**✅ lauffähig unter CCU / RaspberryMatic / OpenCCU Firmware 3.47.10 - 3.83.6**<br/>
 **❓ CCU2 Firmware 2.53.27 - 2.61.7 nur experimentell unterstützt (nicht real getestet; nur gegen ubi-Image)**<br/>
 Die für o.g. CCU-Firmware-Versionen jeweils aktuellste Addon-Version ist bei den [Releases](https://github.com/jp112sdl/JP-HB-Devices-addon/releases/latest) zu finden.
 <br/>
@@ -51,7 +51,7 @@ Es sollte klar sein, dass mit (m)einer eventuellen Aufgabe dieses Hobbys, mittel
 
 Nach der Installation wird automatisch ein Neustart der Zentrale durchgeführt.<br/>
 Die eigentliche Installation des Addons erfolgt nach diesem Neustart, während die Zentrale hochfährt.<br/>
-In dieser Zeit werden die Dienste **ReGaHss** und **RFD** gestoppt, so dass es **_(nicht bei RaspberryMatic!)_** im Browser zu der Meldung<br/>`Eine Komponente der Homematic Zentrale reagiert nicht mehr.` kommen kann.<br/>
+In dieser Zeit werden die Dienste **ReGaHss** und **RFD** gestoppt, so dass es **_(nicht bei RaspberryMatic/OpenCCU!)_** im Browser zu der Meldung<br/>`Eine Komponente der Homematic Zentrale reagiert nicht mehr.` kommen kann.<br/>
 _Bitte etwas Geduld haben - je nach Geschwindigkeit der SD Karte kann die Installation u.U. mehrere Minuten in Anspruch nehmen!_<br/><br/>
 
 ❗ Sollten anschließend keine Geräte-Icons und/oder -beschreibungen in der WebUI angezeigt werden, muss der Browser-Cache gelöscht werden.
