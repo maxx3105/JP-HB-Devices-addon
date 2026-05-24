@@ -93,7 +93,12 @@ do_patch()
 {
     echo "### $2 patch file $1" | tee -a $TMP_LOGFILE | tee -a $TMP_ERRFILE
     convert_lf $1
-    patch $3 -p3 -i $1 >> $TMP_LOGFILE 2>>$TMP_ERRFILE
+    # -N (--forward): skippt Hunks die bereits angewendet sind (oder bei -R bereits reversed).
+    # Verhindert "Hunk FAILED" wenn ein vorheriger Install/Deinstall einzelne Hunks
+    # nicht sauber zurueckgenommen hat (z.B. nach Upgrade von alter Version, deren
+    # Revoke unsauber war). jp's Sonderfall fuer programs.htm weiter unten nutzt
+    # das schon explizit; hier ziehen wir es generisch nach.
+    patch -N $3 -p3 -i $1 >> $TMP_LOGFILE 2>>$TMP_ERRFILE
     echo "- done" | tee -a $TMP_LOGFILE | tee -a $TMP_ERRFILE
 }
 

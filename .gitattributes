@@ -1,0 +1,24 @@
+# Shell scripts MUST have LF line endings - the Linux kernel parses
+# the shebang line and would otherwise try to execute "/bin/sh\r"
+# (Error 127 = command not found) when shipped to the CCU.
+*.sh                  text eol=lf
+*.cgi                 text eol=lf
+update_script         text eol=lf
+rc.d/*                text eol=lf
+src/update_script     text eol=lf
+src/rc.d/*            text eol=lf
+src/addon/inst_*      text eol=lf
+src/addon/update-check.cgi  text eol=lf
+
+# Build scripts on the repo itself (run on dev machine)
+build.sh              text eol=lf
+test.sh               text eol=lf
+snapshot-test.sh      text eol=lf
+
+# Binary assets - never touch
+*.png                 binary
+*.tgz                 binary
+
+# Patches and patchsource - keep CRLF (matches CCU /www files)
+*.patch               text eol=crlf
+patchsource/**        text eol=crlf
