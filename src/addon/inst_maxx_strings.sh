@@ -18,6 +18,11 @@
 ST_DE=/www/webui/js/lang/de/translate.lang.stringtable.js
 ST_EN=/www/webui/js/lang/en/translate.lang.stringtable.js
 
+# Counter fuer Logging-Summary (file-scope, reset in do_install)
+ADDED=0
+SKIPPED_PRESENT=0
+SKIPPED_NOFILE=0
+
 # Fuegt einen Eintrag vor der "noMoreKeys"-Zeile ein,
 # wenn der Key noch nicht im File ist.
 add_str() {
@@ -25,9 +30,11 @@ add_str() {
     local KEY="$2"
     local VAL="$3"
     if [ ! -f "${FILE}" ]; then
+        SKIPPED_NOFILE=$((SKIPPED_NOFILE + 1))
         return 0
     fi
     if grep -qF "\"${KEY}\"" "${FILE}"; then
+        SKIPPED_PRESENT=$((SKIPPED_PRESENT + 1))
         return 0
     fi
     # Anker: erste Zeile mit "noMoreKeys" - wir fuegen davor ein
@@ -39,6 +46,8 @@ add_str() {
     INSERT_LINE=$((ANCHOR_LINE - 1))
     sed -i "${INSERT_LINE}a\\
     \"${KEY}\" : \"${VAL}\"," "${FILE}"
+    ADDED=$((ADDED + 1))
+    echo "  + $(basename ${FILE}): ${KEY}"
 }
 
 # Entfernt einen Eintrag (exakter Zeilen-Match auf Key).
@@ -54,6 +63,9 @@ del_str() {
 
 do_install() {
     echo "=== inst_maxx_strings.sh: install ==="
+    ADDED=0
+    SKIPPED_PRESENT=0
+    SKIPPED_NOFILE=0
 
     # Deutsch
     add_str "${ST_DE}" "stringTableHbTemperatureOffset3" "Temperatur-Offset Sensor 3"
@@ -89,6 +101,7 @@ do_install() {
     add_str "${ST_EN}" "stringTableHbMoonOffsetDays"     "Moon offset (days)"
     add_str "${ST_EN}" "stringTableHbCurrentTime"        "Current time (UTC Unix epoch)"
 
+    echo "  summary: ${ADDED} added, ${SKIPPED_PRESENT} already present, ${SKIPPED_NOFILE} skipped (file missing)"
     echo "=== inst_maxx_strings.sh: install done ==="
 }
 
