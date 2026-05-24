@@ -239,24 +239,6 @@
      "stringTableCharacteristicHalfConstant" : "halbe/konstante Leistung",
      "stringTableCharacteristicLevelLimit" : "Pegelbegrenzung",
      "stringTableCharacteristicLinSquareType" : "Ausgangskennlinie",
-@@ -1216,6 +1448,17 @@
- 
-     "stringTableOldValue" : "Alter Wert",
-     "stringTableNoChange" : "Ignorieren",
-+    "stringTableHbTemperatureOffset3" : "Temperatur-Offset Sensor 3",
-+    "stringTableHbEc" : "Elektrische Leitf%E4higkeit",
-+    "stringTableHbTds" : "TDS-Wert",
-+    "stringTableButtonOnBehavior" : "Verhalten beim Einschalten",
-+    "stringTableCharacteristic" : "Dimmkennlinie",
-+    "stringTableHbLatitude" : "Breitengrad",
-+    "stringTableHbLongitude" : "L%E4ngengrad",
-+    "stringTableHbTimezoneHours" : "Zeitzone (Stunden)",
-+    "stringTableHbSunOffsetMin" : "Sonnen-Offset (Minuten)",
-+    "stringTableHbMoonOffsetDays" : "Mond-Offset (Tage)",
-+    "stringTableHbCurrentTime" : "Aktuelle Zeit (UTC Unix-Epoch)",
- 
-     "noMoreKeys" : ""
-   }
 --- ./patchsource/www/webui/js/lang/en/translate.lang.stringtable.js.orig
 +++ ./patchsource/www/webui/js/lang/en/translate.lang.stringtable.js
 @@ -109,6 +109,37 @@
@@ -297,28 +279,3 @@
      "stringTableCharacteristicHalfConstant" : "half/constant power",
      "stringTableCharacteristicLevelLimit" : "Level limitation",
      "stringTableCharacteristicLinSquareType" : "Output characteristic",
-@@ -1216,6 +1247,24 @@
- 
-     "stringTableOldValue" : "Old Value",
-     "stringTableNoChange" : "Ignore",
-+    "stringTableHbPh" : "pH value",
-+    "stringTableHbOrp" : "ORP value",
-+    "stringTableHbToggleWaitTime" : "Relay switching delay",
-+    "stringTableHbFlowrate" : "Flow rate",
-+    "stringTableHbFlowrateQFactor" : "Flow sensor Q-factor",
-+    "stringTableHbTemperatureOffset1" : "Temperature offset sensor 1",
-+    "stringTableHbTemperatureOffset2" : "Temperature offset sensor 2",
-+    "stringTableHbTemperatureOffset3" : "Temperature offset sensor 3",
-+    "stringTableHbEc" : "Electrical conductivity",
-+    "stringTableHbTds" : "TDS value",
-+    "stringTableButtonOnBehavior" : "Power-on behavior",
-+    "stringTableCharacteristic" : "Dimming characteristic",
-+    "stringTableHbLatitude" : "Latitude",
-+    "stringTableHbLongitude" : "Longitude",
-+    "stringTableHbTimezoneHours" : "Timezone (hours)",
-+    "stringTableHbSunOffsetMin" : "Sun offset (minutes)",
-+    "stringTableHbMoonOffsetDays" : "Moon offset (days)",
-+    "stringTableHbCurrentTime" : "Current time (UTC Unix epoch)",
- 
-     "noMoreKeys" : ""
-   }

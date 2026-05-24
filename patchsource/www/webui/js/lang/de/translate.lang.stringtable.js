@@ -1448,17 +1448,6 @@ jQuery.extend(true,langJSON, {
 
     "stringTableOldValue" : "Alter Wert",
     "stringTableNoChange" : "Ignorieren",
-    "stringTableHbTemperatureOffset3" : "Temperatur-Offset Sensor 3",
-    "stringTableHbEc" : "Elektrische Leitf%E4higkeit",
-    "stringTableHbTds" : "TDS-Wert",
-    "stringTableButtonOnBehavior" : "Verhalten beim Einschalten",
-    "stringTableCharacteristic" : "Dimmkennlinie",
-    "stringTableHbLatitude" : "Breitengrad",
-    "stringTableHbLongitude" : "L%E4ngengrad",
-    "stringTableHbTimezoneHours" : "Zeitzone (Stunden)",
-    "stringTableHbSunOffsetMin" : "Sonnen-Offset (Minuten)",
-    "stringTableHbMoonOffsetDays" : "Mond-Offset (Tage)",
-    "stringTableHbCurrentTime" : "Aktuelle Zeit (UTC Unix-Epoch)",
 
     "noMoreKeys" : ""
   }
