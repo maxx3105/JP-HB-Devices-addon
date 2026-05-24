@@ -1,0 +1,46 @@
+! hbprogram.fn - WebUI-Renderer fuer eigenen Channel-Typ HB_PROGRAM
+!
+! Wird vom Dispatcher in /www/rega/esp/datapointconfigurator.fn aufgerufen,
+! wenn ein Datenpunkt mit control="HB_PROGRAM.*" in einem Channel auftaucht.
+! Bietet ein Dropdown mit den Biotop-Programmen des HB-LC-Dim5-VIVA-CV.
+!
+! Items sind aktuell hartcodiert fuer das Viva-Geraet (Neutral/Suesswasser/
+! Meerwasser/Wueste/Jungel). Spaeter dynamisch aus dem ENUM-Logical des
+! Datenpunkts (z.B. via oProgram.ValueList()) generieren, sobald wir die
+! HMScript-Schleifen-Syntax fuer Semikolon-getrennte Strings sauber loesen.
+
+function ::CreateHbProgramControl() {
+  object oProgram = cObj.DPByControl("HB_PROGRAM.PROGRAM");
+  if (oProgram) {
+    integer iCurrent = oProgram.Value();
+    string sDpId = oProgram.ID();
+    string sSel0 = ""; if (iCurrent == 0) { sSel0 = " selected"; }
+    string sSel1 = ""; if (iCurrent == 1) { sSel1 = " selected"; }
+    string sSel2 = ""; if (iCurrent == 2) { sSel2 = " selected"; }
+    string sSel3 = ""; if (iCurrent == 3) { sSel3 = " selected"; }
+    string sSel4 = ""; if (iCurrent == 4) { sSel4 = " selected"; }
+
+    WriteLine("<tr>");
+    WriteLine(" <td>");
+    WriteLine("  <table width='100%' cellspacing='4'>");
+    WriteLine("   <tr><td>");
+    WriteLine("    <table class='ControlBtnInfo' style='min-width: 205px;'>");
+    WriteLine("     <tr>");
+    WriteLine("      <td><span>Programm</span></td>");
+    WriteLine("      <td>");
+    WriteLine("       <select id='hbprog" # chnId # "' onchange='setDpState(" # sDpId # ",this.value)'>");
+    WriteLine("        <option value='0'" # sSel0 # ">Neutral</option>");
+    WriteLine("        <option value='1'" # sSel1 # ">S&uuml;&szlig;wasser</option>");
+    WriteLine("        <option value='2'" # sSel2 # ">Meerwasser</option>");
+    WriteLine("        <option value='3'" # sSel3 # ">W&uuml;ste</option>");
+    WriteLine("        <option value='4'" # sSel4 # ">Dschungel</option>");
+    WriteLine("       </select>");
+    WriteLine("      </td>");
+    WriteLine("     </tr>");
+    WriteLine("    </table>");
+    WriteLine("   </td></tr>");
+    WriteLine("  </table>");
+    WriteLine(" </td>");
+    WriteLine("</tr>");
+  }
+}

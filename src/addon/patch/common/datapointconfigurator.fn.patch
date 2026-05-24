@@ -1,6 +1,14 @@
 --- ./patchsource/www/rega/esp/datapointconfigurator.fn.orig
 +++ ./patchsource/www/rega/esp/datapointconfigurator.fn
-@@ -151,6 +151,20 @@
+@@ -132,6 +132,7 @@
+     var CN_RGB_COLOR        = "RGB_COLOR.";
+     var CN_RGBW_AUTOMATIC  = "RGBW_AUTOMATIC.";
+     var CN_RGBW_COLOR       = "RGBW_COLOR.";
++    var CN_HB_PROGRAM       = "HB_PROGRAM.";
+     var CN_RHS             = "RHS.";
+     var CN_SHUTTER_TRANSMITTER      = "SHUTTER_TRANSMITTER.";
+     var CN_SHUTTER_VIRTUAL_RECEIVER = "SHUTTER_VIRTUAL_RECEIVER.";
+@@ -151,6 +152,20 @@
      var CN_EVENT_INTERFACE = "EVENT_INTERFACE.";
      var CN_NOT_ACTIVE = "CHANNEL_NOT_ACTIVE";
  
@@ -21,7 +29,7 @@
      var isInvisible = false;
      var isKnownControl = false;
  
-@@ -369,7 +383,140 @@
+@@ -369,7 +384,140 @@
              sLastControlName = CN_BTN_SHORT_ONLY;
              Call("/esp/controls/button.fn::CreateKeyShortOnly()");
            }
@@ -163,3 +171,20 @@
            !# BUTTON
            bIsControl = ( sControlName.Find(CN_BUTTON) > -1 );
            if( bIsControl && (sLastControlName!=CN_BUTTON) )
+@@ -684,6 +832,16 @@
+             Call("/esp/controls/rgbw.fn::CreateRGBWAutomaticControl()");
+           }
+ 
++          !# CN_HB_PROGRAM
++          bIsControl = ( sControlName.Find(CN_HB_PROGRAM) > -1 );
++          if( bIsControl && (sLastControlName != CN_HB_PROGRAM) )
++          {
++            WriteLine( "<script>conInfo('Control CN_HB_PROGRAM found.');</script>" );
++            isKnownControl = true;
++            sLastControlName = CN_HB_PROGRAM;
++            Call("/esp/controls/hbprogram.fn::CreateHbProgramControl()");
++          }
++
+           !# CN_SMOKE_DETECTOR
+           bIsControl = ( sControlName.Find(CN_SMOKE_DETECTOR) > -1 );
+           if( bIsControl && (sLastControlName != CN_SMOKE_DETECTOR) )

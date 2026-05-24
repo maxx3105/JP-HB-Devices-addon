@@ -15,6 +15,8 @@ HB-LC-Bl1-Velux;7_hm-lc-bl1-fm
 HB-LC-Bl1PBU-FM;PushButton-2ch-wm
 HB-LC-Bl2-RD;hb-lc-bl2-rd
 HB-LC-Dim5PWM-CV;114_hm-lc-dim1t-fm-lf
+HB-LC-Dim5-VIVA-CV;hb-lc-dim5-viva-cv
+HB-LC-RGB-DW-CV;114_hm-lc-dim1t-fm-lf
 HB-LC-Sw1PBU-FM;PushButton-2ch-wm
 HB-LC-Sw1-FM;4_hm-lc-sw1-fm
 HB-LC-Sw2-FM;5_hm-lc-sw2-fm
@@ -54,6 +56,7 @@ HB-UNI-Sen-DIST-US;hb-uni-sen-dist-us
 HB-UNI-Sen-DUMMY-BEACON;hb-uni-sen-dummy-beacon
 HB-UNI-Sen-DUMMY-BEACON-V2;hb-uni-sen-dummy-beacon
 HB-UNI-Sen-DUST;hb-uni-sen-dust
+HB-UNI-Sen-EC;hb-uni-sen-ec
 HB-UNI-Sen-IAQ;hb-uni-sen-iaq
 HB-UNI-Sen-LDR-SC;hb-uni-sen-ldr-sc
 HB-UNI-Sen-LEV-TOF;hb-uni-sen-lev-tof
@@ -63,9 +66,11 @@ HB-UNI-Sen-PF-SC;hb-uni-sen-pf-sc
 HB-UNI-Sen-PH;hb-uni-sen-ph
 HB-UNI-Sen-PH-ORP;hb-uni-sen-ph-orp
 HB-UNI-Sen-POOL;hb-uni-sen-pool
+HB-UNI-Sen-POOL-WP;hb-uni-sen-pool-wp
 HB-UNI-Sen-PRESS;hb-uni-sen-press
 HB-UNI-Sen-PRESS-SC;hb-uni-sen-press
 HB-UNI-Sen-RFID-RC;hb-uni-sen-rfid-rc
+HB-UNI-Sen-TDS;hb-uni-sen-tds
 HB-UNI-Sen-TEMP-DS18B20;hb-uni-sen-temp-ds18b20
 HB-UNI-Sen-TEMP-IR;hb-uni-sen-temp-ir
 HB-UNI-Sen-TEMP-MAX6675;hb-uni-sen-temp-max6675

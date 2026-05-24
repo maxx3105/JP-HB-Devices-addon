@@ -137,7 +137,7 @@ jQuery.extend(true,langJSON, {
     "stringTableWeatherUvIndex" : "UV-Index",
     "stringTableWeatherGustSpeed" : "Boe-Geschwindigkeit",
     "stringTableHbWeaTransmitInterval" : "Sendeintervall",
-    "stringTableHbWeaAltitude" : "H%F6he Ã¼ber NN",
+    "stringTableHbWeaAltitude" : "H%F6he über NN",
     "stringTablePowerMeterVoltage" : "Spannung",
     "stringTableHbPowerOffBehaviour" : "Ausschaltverhalten",
     "stringTableHbPobCondBelow" : "sende Grenzwert unterschritten",
@@ -1448,6 +1448,17 @@ jQuery.extend(true,langJSON, {
 
     "stringTableOldValue" : "Alter Wert",
     "stringTableNoChange" : "Ignorieren",
+    "stringTableHbTemperatureOffset3" : "Temperatur-Offset Sensor 3",
+    "stringTableHbEc" : "Elektrische Leitf%E4higkeit",
+    "stringTableHbTds" : "TDS-Wert",
+    "stringTableButtonOnBehavior" : "Verhalten beim Einschalten",
+    "stringTableCharacteristic" : "Dimmkennlinie",
+    "stringTableHbLatitude" : "Breitengrad",
+    "stringTableHbLongitude" : "L%E4ngengrad",
+    "stringTableHbTimezoneHours" : "Zeitzone (Stunden)",
+    "stringTableHbSunOffsetMin" : "Sonnen-Offset (Minuten)",
+    "stringTableHbMoonOffsetDays" : "Mond-Offset (Tage)",
+    "stringTableHbCurrentTime" : "Aktuelle Zeit (UTC Unix-Epoch)",
 
     "noMoreKeys" : ""
   }

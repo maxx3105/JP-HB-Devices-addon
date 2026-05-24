@@ -1,4 +1,20 @@
-# JP-HB-Devices-addon [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/) <br/>[![Github All Releases](https://img.shields.io/github/downloads/jp112sdl/JP-HB-Devices-addon/total.svg)](https://github.com/jp112sdl/JP-HB-Devices-addon/releases) [![GitHub issues](https://img.shields.io/github/issues/jp112sdl/JP-HB-Devices-addon.svg)](https://github.com/jp112sdl/JP-HB-Devices-addon/issues) [![Patch-Apply OpenCCU Snapshot](https://github.com/jp112sdl/JP-HB-Devices-addon/actions/workflows/test-openccu-snapshot.yml/badge.svg?branch=master)](https://github.com/jp112sdl/JP-HB-Devices-addon/actions/workflows/test-openccu-snapshot.yml) <a href='https://ko-fi.com/N4N21R89O' target='_blank'><img height='20' style='border:0px;height:20px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
+# JP-HB-Devices-addon (maxx3105-Fork)
+
+> **Fork-Hinweis**
+> Dieser Fork basiert auf [jp112sdl/JP-HB-Devices-addon](https://github.com/jp112sdl/JP-HB-Devices-addon) (Original-Maintainer: jp112sdl) und ergänzt die folgenden HomeBrew-Geräte aus [maxx3105/HB-AddOn](https://github.com/maxx3105/HB-AddOn):
+> - **HB-UNI-Sen-POOL-WP** – Pool-Wärmepumpe Controller
+> - **HB-UNI-Sen-EC** – EC-Sensor (Elektrische Leitfähigkeit)
+> - **HB-UNI-Sen-TDS** – TDS-Sensor
+> - **HB-LC-RGB-DW-CV** – RGB + Dual-White 5-Kanal PWM Dimmer
+> - **HB-LC-Dim5-VIVA-CV** – Vivarium 5-Kanal LED PWM Dimmer (Tageslicht + Mondzyklus, nutzt eigenen `HB_PROGRAM`-Renderer)
+>
+> Die Patches und Inst-Skripte des Upstream-Addons bleiben unverändert, eigene Ergänzungen sind in `patchsource/` direkt eingebaut und werden von `build.sh` automatisch in die Patch-Files übernommen. Der Fork ist upstream-mergeable.
+>
+> Versions-Schema: `<jp-Version>.<patch>` — z. B. `6.1.1` = Basis jp 6.1 + Maxx-Erweiterungen Patchlevel 1.
+
+---
+
+# JP-HB-Devices-addon (Original-README) [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/) <br/>[![Github All Releases](https://img.shields.io/github/downloads/maxx3105/JP-HB-Devices-addon/total.svg)](https://github.com/maxx3105/JP-HB-Devices-addon/releases) [![GitHub issues](https://img.shields.io/github/issues/maxx3105/JP-HB-Devices-addon.svg)](https://github.com/maxx3105/JP-HB-Devices-addon/issues) <a href='https://ko-fi.com/N4N21R89O' target='_blank'><img height='20' style='border:0px;height:20px;' src='https://cdn.ko-fi.com/cdn/kofi1.png?v=2' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
 **✅ lauffähig unter CCU / RaspberryMatic / OpenCCU Firmware 3.47.10 - 3.83.6**<br/>
 **❓ CCU2 Firmware 2.53.27 - 2.61.7 nur experimentell unterstützt (nicht real getestet; nur gegen ubi-Image)**<br/>

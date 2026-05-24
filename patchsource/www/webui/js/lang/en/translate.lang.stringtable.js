@@ -1247,6 +1247,24 @@ jQuery.extend(true,langJSON, {
 
     "stringTableOldValue" : "Old Value",
     "stringTableNoChange" : "Ignore",
+    "stringTableHbPh" : "pH value",
+    "stringTableHbOrp" : "ORP value",
+    "stringTableHbToggleWaitTime" : "Relay switching delay",
+    "stringTableHbFlowrate" : "Flow rate",
+    "stringTableHbFlowrateQFactor" : "Flow sensor Q-factor",
+    "stringTableHbTemperatureOffset1" : "Temperature offset sensor 1",
+    "stringTableHbTemperatureOffset2" : "Temperature offset sensor 2",
+    "stringTableHbTemperatureOffset3" : "Temperature offset sensor 3",
+    "stringTableHbEc" : "Electrical conductivity",
+    "stringTableHbTds" : "TDS value",
+    "stringTableButtonOnBehavior" : "Power-on behavior",
+    "stringTableCharacteristic" : "Dimming characteristic",
+    "stringTableHbLatitude" : "Latitude",
+    "stringTableHbLongitude" : "Longitude",
+    "stringTableHbTimezoneHours" : "Timezone (hours)",
+    "stringTableHbSunOffsetMin" : "Sun offset (minutes)",
+    "stringTableHbMoonOffsetDays" : "Moon offset (days)",
+    "stringTableHbCurrentTime" : "Current time (UTC Unix epoch)",
 
     "noMoreKeys" : ""
   }
