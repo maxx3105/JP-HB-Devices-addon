@@ -17,6 +17,7 @@
 
 ST_DE=/www/webui/js/lang/de/translate.lang.stringtable.js
 ST_EN=/www/webui/js/lang/en/translate.lang.stringtable.js
+WEBUI_JS=/www/webui/webui.js
 
 # Counter fuer Logging-Summary (file-scope, reset in do_install)
 ADDED=0
@@ -61,6 +62,44 @@ del_str() {
     sed -i "/\"${KEY}\"[[:space:]]*:/d" "${FILE}"
 }
 
+# Fuegt einen elvST-Mapping ParameterID -> stringTable-Key in webui.js ein.
+# Wird von der Geraeteparameter-UI gelesen, um die rohen ParameterIDs
+# (LATITUDE, LONGITUDE etc.) in lesbare Texte aufzuloesen.
+# Idempotent: wenn der Key schon da ist, wird nichts gemacht.
+add_elvst() {
+    local PARAM="$1"
+    local STKEY="$2"
+    if [ ! -f "${WEBUI_JS}" ]; then
+        SKIPPED_NOFILE=$((SKIPPED_NOFILE + 1))
+        return 0
+    fi
+    # Eindeutige Pruefung: Zeile mit "elvST['PARAM'] = " (genau)
+    if grep -qF "elvST['${PARAM}'] = " "${WEBUI_JS}"; then
+        SKIPPED_PRESENT=$((SKIPPED_PRESENT + 1))
+        return 0
+    fi
+    # Anker: existierende elvST-Zeile MAINTENANCE|UNREACH (sehr eindeutig,
+    # gehoert zu jps Basis-Patch oder schon im Original)
+    ANCHOR_LINE=$(grep -n "elvST\['MAINTENANCE|UNREACH'\]" "${WEBUI_JS}" | head -1 | cut -d: -f1)
+    if [ -z "${ANCHOR_LINE}" ]; then
+        echo "  ERROR: elvST['MAINTENANCE|UNREACH'] anchor not found in webui.js"
+        return 1
+    fi
+    sed -i "${ANCHOR_LINE}a\\
+elvST['${PARAM}'] = '\${${STKEY}}';" "${WEBUI_JS}"
+    ADDED=$((ADDED + 1))
+    echo "  + webui.js: elvST['${PARAM}']"
+}
+
+# Entfernt elvST-Eintrag aus webui.js.
+del_elvst() {
+    local PARAM="$1"
+    if [ ! -f "${WEBUI_JS}" ]; then
+        return 0
+    fi
+    sed -i "/^elvST\['${PARAM}'\][[:space:]]*=/d" "${WEBUI_JS}"
+}
+
 do_install() {
     echo "=== inst_maxx_strings.sh: install ==="
     ADDED=0
@@ -101,6 +140,45 @@ do_install() {
     add_str "${ST_EN}" "stringTableHbMoonOffsetDays"     "Moon offset (days)"
     add_str "${ST_EN}" "stringTableHbCurrentTime"        "Current time (UTC Unix epoch)"
 
+    # elvST-Mappings in webui.js: noetig damit die Geraeteparameter-UI
+    # die rohen ParameterIDs (LATITUDE etc.) ueberhaupt als deutsche
+    # Texte aufloest. Ohne diese Eintraege erscheint "LATITUDE" statt
+    # "Breitengrad" im Geraete-Parameter-Dialog des HB-LC-Dim5-VIVA-CV
+    # (dimmer_dev_master Parameter ohne Channel-Praefix + MAINTENANCE-
+    # Variante als Backup fuer Status-Grid-Anzeige).
+    add_elvst "LATITUDE"                "stringTableHbLatitude"
+    add_elvst "LONGITUDE"               "stringTableHbLongitude"
+    add_elvst "TIMEZONE_HOURS"          "stringTableHbTimezoneHours"
+    add_elvst "SUN_OFFSET_MIN"          "stringTableHbSunOffsetMin"
+    add_elvst "MOON_OFFSET_DAYS"        "stringTableHbMoonOffsetDays"
+    add_elvst "CURRENT_TIME"            "stringTableHbCurrentTime"
+    add_elvst "MAINTENANCE|LATITUDE"        "stringTableHbLatitude"
+    add_elvst "MAINTENANCE|LONGITUDE"       "stringTableHbLongitude"
+    add_elvst "MAINTENANCE|TIMEZONE_HOURS"  "stringTableHbTimezoneHours"
+    add_elvst "MAINTENANCE|SUN_OFFSET_MIN"  "stringTableHbSunOffsetMin"
+    add_elvst "MAINTENANCE|MOON_OFFSET_DAYS" "stringTableHbMoonOffsetDays"
+    add_elvst "MAINTENANCE|CURRENT_TIME"    "stringTableHbCurrentTime"
+
+    # POOL-WP-spezifische Mappings (HB_GENERIC|*)
+    add_elvst "HB_GENERIC|HB_PH"                "stringTableHbPh"
+    add_elvst "HB_GENERIC|HB_ORP"               "stringTableHbOrp"
+    add_elvst "HB_GENERIC|HB_ORPOFFSET"         "stringTableHbOrpOffset"
+    add_elvst "HB_GENERIC|HB_TOGGLEWAITTIME"    "stringTableHbToggleWaitTime"
+    add_elvst "HB_GENERIC|HB_FLOW_RATE"         "stringTableHbFlowrate"
+    add_elvst "HB_GENERIC|HB_FLOWRATE_QFACTOR"  "stringTableHbFlowrateQFactor"
+    add_elvst "HB_GENERIC|UNI_PRESSURE"         "stringTableUniPressure"
+    add_elvst "HB_GENERIC|TEMPERATURE_OFFSET"   "stringTableTemperatureOffset"
+    add_elvst "HB_GENERIC|TEMPERATURE_OFFSET_1" "stringTableHbTemperatureOffset1"
+    add_elvst "HB_GENERIC|TEMPERATURE_OFFSET_2" "stringTableHbTemperatureOffset2"
+    add_elvst "HB_GENERIC|TEMPERATURE_OFFSET_3" "stringTableHbTemperatureOffset3"
+    add_elvst "HB_GENERIC|HB_EC"                "stringTableHbEc"
+    add_elvst "HB_GENERIC|HB_TDS"               "stringTableHbTds"
+
+    # RGB-DW-CV-spezifische Mappings
+    add_elvst "DIMMER|BUTTON_ON_BEHAVIOR"              "stringTableButtonOnBehavior"
+    add_elvst "DUAL_WHITE_BRIGHTNESS|BUTTON_ON_BEHAVIOR" "stringTableButtonOnBehavior"
+    add_elvst "DUAL_WHITE_BRIGHTNESS|CHARACTERISTIC"   "stringTableCharacteristic"
+
     echo "  summary: ${ADDED} added, ${SKIPPED_PRESENT} already present, ${SKIPPED_NOFILE} skipped (file missing)"
     echo "=== inst_maxx_strings.sh: install done ==="
 }
@@ -133,6 +211,36 @@ do_uninstall() {
     del_str "${ST_EN}" "stringTableHbFlowrateQFactor"
     del_str "${ST_EN}" "stringTableHbTemperatureOffset1"
     del_str "${ST_EN}" "stringTableHbTemperatureOffset2"
+
+    # elvST-Mappings in webui.js entfernen
+    del_elvst "LATITUDE"
+    del_elvst "LONGITUDE"
+    del_elvst "TIMEZONE_HOURS"
+    del_elvst "SUN_OFFSET_MIN"
+    del_elvst "MOON_OFFSET_DAYS"
+    del_elvst "CURRENT_TIME"
+    del_elvst "MAINTENANCE|LATITUDE"
+    del_elvst "MAINTENANCE|LONGITUDE"
+    del_elvst "MAINTENANCE|TIMEZONE_HOURS"
+    del_elvst "MAINTENANCE|SUN_OFFSET_MIN"
+    del_elvst "MAINTENANCE|MOON_OFFSET_DAYS"
+    del_elvst "MAINTENANCE|CURRENT_TIME"
+    del_elvst "HB_GENERIC|HB_PH"
+    del_elvst "HB_GENERIC|HB_ORP"
+    del_elvst "HB_GENERIC|HB_ORPOFFSET"
+    del_elvst "HB_GENERIC|HB_TOGGLEWAITTIME"
+    del_elvst "HB_GENERIC|HB_FLOW_RATE"
+    del_elvst "HB_GENERIC|HB_FLOWRATE_QFACTOR"
+    del_elvst "HB_GENERIC|UNI_PRESSURE"
+    del_elvst "HB_GENERIC|TEMPERATURE_OFFSET"
+    del_elvst "HB_GENERIC|TEMPERATURE_OFFSET_1"
+    del_elvst "HB_GENERIC|TEMPERATURE_OFFSET_2"
+    del_elvst "HB_GENERIC|TEMPERATURE_OFFSET_3"
+    del_elvst "HB_GENERIC|HB_EC"
+    del_elvst "HB_GENERIC|HB_TDS"
+    del_elvst "DIMMER|BUTTON_ON_BEHAVIOR"
+    del_elvst "DUAL_WHITE_BRIGHTNESS|BUTTON_ON_BEHAVIOR"
+    del_elvst "DUAL_WHITE_BRIGHTNESS|CHARACTERISTIC"
 
     echo "=== inst_maxx_strings.sh: uninstall done ==="
 }
