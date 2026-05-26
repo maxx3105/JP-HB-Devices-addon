@@ -91,15 +91,26 @@ cleanup_orig_files()
 
 do_patch()
 {
-    echo "### $2 patch file $1" | tee -a $TMP_LOGFILE | tee -a $TMP_ERRFILE
+    echo "### $2 patch file $1" | tee -a $TMP_LOGFILE
     convert_lf $1
     # -N (--forward): skippt Hunks die bereits angewendet sind (oder bei -R bereits reversed).
     # Verhindert "Hunk FAILED" wenn ein vorheriger Install/Deinstall einzelne Hunks
     # nicht sauber zurueckgenommen hat (z.B. nach Upgrade von alter Version, deren
     # Revoke unsauber war). jp's Sonderfall fuer programs.htm weiter unten nutzt
     # das schon explizit; hier ziehen wir es generisch nach.
-    patch -N $3 -p3 -i $1 >> $TMP_LOGFILE 2>>$TMP_ERRFILE
-    echo "- done" | tee -a $TMP_LOGFILE | tee -a $TMP_ERRFILE
+    # Patch-Output ins TMP-File, dann analysieren - nur echte Fails ins ERRFILE.
+    # (jp's Original tee-te jeden ### / - done in ERRFILE, was den error.log
+    # auch ohne echte Fehler dauerhaft befuellt.)
+    _patch_out=$(mktemp 2>/dev/null || echo /tmp/_patch_out.$$)
+    patch -N $3 -p3 -i $1 >"$_patch_out" 2>&1
+    _patch_rc=$?
+    cat "$_patch_out" >> $TMP_LOGFILE
+    if [ $_patch_rc -ne 0 ] || grep -qiE 'fail|reject' "$_patch_out"; then
+      echo "### $2 patch file $1" >> $TMP_ERRFILE
+      cat "$_patch_out" >> $TMP_ERRFILE
+    fi
+    rm -f "$_patch_out"
+    echo "- done" | tee -a $TMP_LOGFILE
 }
 
 patcher()
@@ -282,21 +293,65 @@ case "$1" in
       fi
       
       
+      # Sanitize ERRFILE: Eintraege fuer Patches entfernen, deren
+      # erwartete Marker nach den inst_*-Hooks tatsaechlich in den
+      # Zieldateien stehen. Damit verschwinden Hunk-FAILs aus dem
+      # error.log, die ein inst_maxx_*.sh-Hook im Nachgang
+      # bereits repariert hat (z.B. ic_linkpeerlist.cgi).
+      if [ -f ${TMP_ERRFILE} ] && grep -q "ic_linkpeerlist" ${TMP_ERRFILE}; then
+        if grep -q "HB-LC-Sw1PBU-FM" /www/config/ic_linkpeerlist.cgi 2>/dev/null; then
+          # Block ist da -> Hunk-FAIL war nur Anker-Drift, kein echter Fehler
+          # Loesche alle ic_linkpeerlist-bezogenen Zeilen + naechste 3 (Hunk-Output)
+          sed -i '/ic_linkpeerlist/,+30d' ${TMP_ERRFILE}
+          # Falls jetzt nur noch Whitespace uebrig -> komplett leeren
+          if ! grep -q '[^[:space:]]' ${TMP_ERRFILE}; then
+            : > ${TMP_ERRFILE}
+          fi
+        fi
+      fi
+
       if [ -f ${TMP_ERRFILE} ]; then
        errors=`grep -i -E 'fail|err' ${TMP_ERRFILE}`
-       if [ -z $errors ]; then
+       if [ -z "$errors" ]; then
          echo "No errors found during installation"
          [[ -f ${ADDON_DIR}/install_error ]] && rm ${ADDON_DIR}/install_error
+         # ERRFILE + alten error.log + Symlink in /www/rega loeschen,
+         # damit das CCU-WebUI keinen toten "Error"-Link mehr anzeigt.
+         rm -f ${TMP_ERRFILE}
+         rm -f ${LOG_DIR}/${ADDON_NAME}-inst.err
+         if [ -L /www/rega/${ADDON_NAME}-error.log ] || [ -e /www/rega/${ADDON_NAME}-error.log ]; then
+           mount -o remount,rw /
+           rm -f /www/rega/${ADDON_NAME}-error.log
+           mount -o remount,ro /
+         fi
        else
          echo "Errors found during installation:"
          cat ${TMP_ERRFILE}
          touch ${ADDON_DIR}/install_error
        fi
-      fi 
+      else
+        # ERRFILE existiert nicht (komplett sauberer Lauf)
+        # -> auch alten error.log + Symlink loswerden
+        [[ -f ${ADDON_DIR}/install_error ]] && rm ${ADDON_DIR}/install_error
+        rm -f ${LOG_DIR}/${ADDON_NAME}-inst.err
+        if [ -L /www/rega/${ADDON_NAME}-error.log ] || [ -e /www/rega/${ADDON_NAME}-error.log ]; then
+          mount -o remount,rw /
+          rm -f /www/rega/${ADDON_NAME}-error.log
+          mount -o remount,ro /
+        fi
+      fi
      
-      cp ${TMP_LOGDIR}/${ADDON_NAME}-* ${LOG_DIR}/
-      
-      if [ ! -f /www/rega/${ADDON_NAME}-error.log ]; then mount -o remount,rw /; ln -s ${LOG_DIR}/${ADDON_NAME}-inst.err /www/rega/${ADDON_NAME}-error.log; mount -o remount,ro /; fi
+      # Logs ins persistente Log-Verzeichnis kopieren. Bei sauberem Lauf
+      # wurde TMP_ERRFILE bereits oben geloescht, daher landet hier nur
+      # noch der inst.log - keine leere inst.err mehr.
+      cp ${TMP_LOGDIR}/${ADDON_NAME}-* ${LOG_DIR}/ 2>/dev/null
+
+      # Symlink in /www/rega NUR anlegen wenn es einen echten error.log gibt
+      if [ -f ${LOG_DIR}/${ADDON_NAME}-inst.err ] && [ ! -f /www/rega/${ADDON_NAME}-error.log ]; then
+        mount -o remount,rw /
+        ln -s ${LOG_DIR}/${ADDON_NAME}-inst.err /www/rega/${ADDON_NAME}-error.log
+        mount -o remount,ro /
+      fi
     ;;
 
     stop)
