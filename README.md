@@ -1,16 +1,44 @@
 # JP-HB-Devices-addon (maxx3105-Fork)
 
-> **Fork-Hinweis**
-> Dieser Fork basiert auf [jp112sdl/JP-HB-Devices-addon](https://github.com/jp112sdl/JP-HB-Devices-addon) (Original-Maintainer: jp112sdl) und ergänzt die folgenden HomeBrew-Geräte aus [maxx3105/HB-AddOn](https://github.com/maxx3105/HB-AddOn):
-> - **HB-UNI-Sen-POOL-WP** – Pool-Wärmepumpe Controller
-> - **HB-UNI-Sen-EC** – EC-Sensor (Elektrische Leitfähigkeit)
-> - **HB-UNI-Sen-TDS** – TDS-Sensor
-> - **HB-LC-RGB-DW-CV** – RGB + Dual-White 5-Kanal PWM Dimmer
-> - **HB-LC-Dim5-VIVA-CV** – Vivarium 5-Kanal LED PWM Dimmer (Tageslicht + Mondzyklus, nutzt eigenen `HB_PROGRAM`-Renderer)
->
-> Die Patches und Inst-Skripte des Upstream-Addons bleiben unverändert, eigene Ergänzungen sind in `patchsource/` direkt eingebaut und werden von `build.sh` automatisch in die Patch-Files übernommen. Der Fork ist upstream-mergeable.
->
-> Versions-Schema: `<jp-Version>.<patch>` — z. B. `6.1.1` = Basis jp 6.1 + Maxx-Erweiterungen Patchlevel 1.
+Dieser Fork basiert auf [jp112sdl/JP-HB-Devices-addon](https://github.com/jp112sdl/JP-HB-Devices-addon) (Original-Maintainer: jp112sdl) und ergänzt das Addon um eigene HomeBrew-Geräte aus [maxx3105/HB-AddOn](https://github.com/maxx3105/HB-AddOn) sowie um Robustheits-Fixes für die Installation auf OpenCCU/RaspberryMatic.
+
+## Zusätzliche Geräte
+
+- **HB-UNI-Sen-POOL-WP** – Pool-Wärmepumpe Controller
+- **HB-UNI-Sen-EC** – EC-Sensor (Elektrische Leitfähigkeit)
+- **HB-UNI-Sen-TDS** – TDS-Sensor
+- **HB-LC-RGB-DW-CV** – RGB + Dual-White 5-Kanal PWM Dimmer
+- **HB-LC-Dim5-VIVA-CV** – Vivarium 5-Kanal LED PWM Dimmer (Tageslicht + Mondzyklus, nutzt eigenen `HB_PROGRAM`-Renderer)
+
+## Verbesserungen gegenüber jp-Original
+
+| Bereich | Fork-Verhalten |
+|---|---|
+| **Shell-Skript Zeilenenden** | `.gitattributes` mit `text eol=lf` für alle `*.sh`/`update_script`/`rc.d/*` — verhindert „Error 127" beim Install (Linux-Kernel parst sonst `#!/bin/sh\r` als Pfad) |
+| **`do_patch` idempotent** | `patch -N` bei jedem Aufruf — schon angewendete Hunks werden still übersprungen statt mit `Hunk FAILED` zu brechen. jps Sonderfall für `programs.htm` ist damit nicht mehr nötig |
+| **`do_patch` error.log** | Nur tatsächliche Fails landen im `*.err` — keine Headers/`done`-Zeilen mehr. Bei sauberem Lauf bleibt das `*.err` leer und wird mit Symlink in `/www/rega/` automatisch entfernt |
+| **OpenCCU-Snapshot-Drift** | Drei idempotente `inst_maxx_*.sh`-Hooks mit stabilen Wort-Ankern (`grep`/`sed` statt zeilennummer-empfindlicher Patches), für `datapointconfigurator.fn`, `webui.js` und `ic_linkpeerlist.cgi` |
+| **Geräteparameter-UI** | `elvST[…]`-Einträge in `webui.js` für POOL-WP/Dim5-VIVA/RGB-DW-CV-Parameter — sonst zeigt der Dialog rohe IDs (`LATITUDE` statt „Breitengrad") |
+| **Drüber-Install auf jp 6.1** | Funktioniert ohne Uninstall — selber `ADDON_NAME`, selbe Verzeichnisstruktur. Update-Pfad nimmt das Original-Addon transparent über |
+
+## Eigenschaften
+
+- **Upstream-mergeable** — kein jp-Patch wird modifiziert. Eigene Inserts liegen entweder in `patchsource/` (für `build.sh`-getriebene Diffs) oder in eigenen `inst_maxx_*.sh`-Hooks, die nach den jp-Patches laufen
+- **Idempotent** — wiederholte Installs/Updates sind sauber. Jeder Insert prüft `grep` vor `sed`
+- **Uninstall-fähig** — jeder Hook hat ein `uninstall`-Target, das gezielt nur die eigenen Einträge entfernt
+- **Versions-Schema** — `<jp-Major>.<jp-Minor>.<patchlevel>.<subpatch>` (z. B. `6.1.2.1` = Basis jp 6.1 + Maxx-Patchlevel 2 + Subpatch 1)
+
+## Installation
+
+Tarball aus dem aktuellen [Release](https://github.com/maxx3105/JP-HB-Devices-addon/releases/latest) über die CCU-WebUI hochladen:
+**Einstellungen → Systemsteuerung → Zusatzsoftware → Datei auswählen**
+
+**Kein Uninstall des originalen jp-Addons nötig** — der Fork ersetzt es transparent.
+
+## Beitragen / Issues
+
+- **Issues zum Fork** (eigene Devices, Inst-Hooks, OpenCCU-Probleme): [maxx3105/JP-HB-Devices-addon/issues](https://github.com/maxx3105/JP-HB-Devices-addon/issues)
+- **Issues zu jp-Devices oder jp-Patches**: bitte zuerst beim Upstream einreichen → [jp112sdl/JP-HB-Devices-addon/issues](https://github.com/jp112sdl/JP-HB-Devices-addon/issues)
 
 ---
 
